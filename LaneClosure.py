@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[96]:
-
-
 import arcgis
 from arcgis.gis import GIS
 from arcgis.geoenrichment import *
@@ -60,10 +57,6 @@ from builtins import isinstance
 from socrata import Socrata
 from socrata.authorization import Authorization
 
-
-# In[42]:
-
-
 def webexsearch(mgis, title, owner_value, item_type_value, max_items_value=1000, inoutside=False):
     item_match = None
     search_result = mgis.content.search(query= "title:{} AND owner:{}".format(title, owner_value), 
@@ -79,10 +72,6 @@ def webexsearch(mgis, title, owner_value, item_type_value, max_items_value=1000,
             break
     return item_match
 
-
-# In[43]:
-
-
 #Search Layers
 def lyrsearch(lyrlist, lyrname):
     lyr_match = None
@@ -92,10 +81,6 @@ def lyrsearch(lyrlist, lyrname):
             lyr_match = lyr
             break
     return lyr_match
-
-
-# In[44]:
-
 
 def create_section(lyr, hdrow, chdrows,rtefeat):
     try:
@@ -116,11 +101,7 @@ def create_section(lyr, hdrow, chdrows,rtefeat):
 
     except Exception as e:
         print("Couldn't create the feature. {}".format(str(e)))
-
-
-# In[45]:
-
-
+        
 #Creates a field object at a location and contains the fields below
 def fldvartxt(fldnm,fldtyp,fldnull,fldPrc,fldScl,fldleng,fldalnm,fldreq):
     fld = arcpy.Field()
@@ -134,18 +115,10 @@ def fldvartxt(fldnm,fldtyp,fldnull,fldPrc,fldScl,fldleng,fldalnm,fldreq):
     fld.required = fldreq
     return fld
 
-
-# In[46]:
-
-
 #Returns empty data frame with same col names and dtypes as df
 def df_colsame(df):
     #df0 = pd.DataFrame.spatial({i[0]: pd.Series(dtype=i[1]) for i in df.dtypes.iteritems()}, columns=df.dtypes.index)
     return df
-
-
-# In[47]:
-
 
 def offdirn(closide,dirn1):
     if closide == 'Right':
@@ -176,10 +149,6 @@ def offdirn(closide,dirn1):
         dirn1 = 0 
     return offdirn1,dirn1
 
-
-# In[48]:
-
-
 def deleteupdates(prjstlyrsrc, sectfeats):
     for x in prjstlyrsrc:
         print (" layer: {} ; from item : {} ; URL : {} ; Container : {} ".format(x,x.fromitem,x.url,x.container))
@@ -209,20 +178,12 @@ def deleteupdates(prjstlyrsrc, sectfeats):
                 else:
                     x.delete_features(where=oidqry)
 
-
-# In[49]:
-
-
 # Given anydate and n1 as 0 or 1 or 2 , etc  it computes Last Friday, First Friday and Second Friday, etc at 4PM
 def fridaywk(bdate,n1):
     wkdte = datetime.strftime(bdate,"%w") # + datetime.strftime(bdate,"%z")
     date4pm = datetime.strptime(datetime.strftime(bdate,"%Y-%m-%d"),"%Y-%m-%d") + timedelta(hours=16)
     fr4pm= date4pm + timedelta(days=(5-int(wkdte)+(n1-1)*7))
     return fr4pm
-
-
-# In[50]:
-
 
 def intextold(intxt,rte,rtename):
     intshortlbl = intxt['address']['ShortLabel']
@@ -232,10 +193,6 @@ def intextold(intxt,rte,rtename):
         if rtename not in txt or rte not in txt:
             txtret = txt
     return txtret          
-
-
-# In[51]:
-
 
 def intextshortlabel(intxt,rte,rtename,fromtxt="Nothing"):
     intshortlbl = intxt['address']['ShortLabel']
@@ -269,10 +226,6 @@ def intextshortlabel(intxt,rte,rtename,fromtxt="Nothing"):
         else:
             txtret = txt
     return txtret          
-
-
-# In[52]:
-
 
 def intext(intxt,rte,rtename,fromtxt="Nothing"):
     txtmatchaddress = intxt['address']['Match_addr']  # ['ShortLabel']
@@ -308,17 +261,9 @@ def intext(intxt,rte,rtename,fromtxt="Nothing"):
             txtret = txt
     return txtret        
 
-
-# In[53]:
-
-
 def datemidnight(bdate):
     date0am = datetime.strptime(datetime.strftime(bdate,"%Y-%m-%d"),"%Y-%m-%d") + timedelta(hours=0)
     return date0am
-
-
-# In[54]:
-
 
 #Returns whether or not closure date range is weekend or weekday
 def wkend(b,e):
@@ -330,11 +275,7 @@ def wkend(b,e):
         return 1 
     else: 
         return 0
-
-
-# In[55]:
-
-
+    
 def beginwk(bdate):
     wkdte = datetime.strftime(bdate,"%w")
     if (wkdte==0):
@@ -342,10 +283,6 @@ def beginwk(bdate):
     else:  # wkdte>=1:
         bw = bdate + timedelta(days=(7-wkdte))
     return bw
-
-
-# In[56]:
-
 
 def beginthiswk(bdate):
     wkdte = datetime.strftime(bdate,"%w")
@@ -355,44 +292,24 @@ def beginthiswk(bdate):
         bw = bdate - timedelta(days=(8-int(wkdte)))
     return bw    
 
-
-# In[57]:
-
-
 def midnextnight(bdate,n1):
     datenextam = datetime.strptime(datetime.strftime(bdate,"%Y-%m-%d"),"%Y-%m-%d") + timedelta(day=n1)
     return datenextam
-
-
-# In[58]:
-
 
 #BeginDateName,EndDateName:  The month and the day portion of the begin or end date. (ex. November 23)
 def dtemon(dte):
     dtext = datetime.strftime(dte-timedelta(hours=10),"%B") + " " +  str(int(datetime.strftime(dte-timedelta(hours=10),"%d")))
     return dtext
 
-
-# In[59]:
-
-
 # BeginDay, EndDay: Weekday Name of the begin date (Monday, Tuesday, Wednesday, etc.)
 def daytext(dte):
     dtext = datetime.strftime(dte-timedelta(hours=10),"%A") 
     return dtext
 
-
-# In[60]:
-
-
 #BeginTime, EndTime: The time the lane closure begins.  12 hour format with A.M. or P.M. at the end
 def hrtext(dte):
     hrtext = datetime.strftime(dte-timedelta(hours=10),"%I:%M %p") 
     return hrtext
-
-
-# In[61]:
-
 
 def rtempt(lyrts,rtefc,lrte,bmpvalx,offs=0):
     if arcpy.Exists(mptbl):    
@@ -446,10 +363,6 @@ def rtempt(lyrts,rtefc,lrte,bmpvalx,offs=0):
         else:
             insecgeo=None    
     return insecgeo
-
-
-# In[62]:
-
 
 def rtesectmpo(lyrts,rteid,bmpvalx,empvalx,offs):
     if arcpy.Exists(mptbl):    
@@ -543,10 +456,6 @@ def rtesectmpo(lyrts,rteid,bmpvalx,empvalx,offs):
             insecgeo=None    
     return insecgeo
 
-
-# In[63]:
-
-
 def three2twod(shp):
     if shp is not None:
         mgeom = shp['paths']
@@ -567,10 +476,6 @@ def three2twod(shp):
     else:
         smuplinef = []
     return smuplinef
-
-
-# In[66]:
-
 
 def rtesectmp(lyrts,rteid,bmpvalx,empvalx,offs):
     if arcpy.Exists(mptbl):    
@@ -685,10 +590,6 @@ def rtesectmp(lyrts,rteid,bmpvalx,empvalx,offs):
     print('Layer {} ; Route {} created section geometry {} ; original BMP : {} ; EMP : {} ; section BMP : {} ; EMP : {} ; offset {}.'.format(lyrname,rteid,insecgeo,bmpvalx,empvalx,bmpval,empval,offs ))
     return insecgeo
 
-
-# In[67]:
-
-
 def mergeometry(geomfeat):
     mgeom = geomfeat.geometry
     if len(geomfeat)>0:
@@ -700,10 +601,6 @@ def mergeometry(geomfeat):
         rtept2 = rtepaths[glen-1][len(rtepaths[glen-1])-1] #geomrte.last_point
         mgeom =[ [ x for sublist in rtepaths for x in sublist] ]
     return mgeom
-
-
-# In[68]:
-
 
 def assyncadds(lyr1,fset):
     sucs1=0
@@ -718,10 +615,6 @@ def assyncadds(lyr1,fset):
             sleep(7)
     return pres
 
-
-# In[70]:
-
-
 def assyncaddspt(lyr1,fset):
     sucs1=0
     pres = None
@@ -735,18 +628,10 @@ def assyncaddspt(lyr1,fset):
             sleep(5)
     return pres
 
-
-# In[71]:
-
-
 #Get date and time
 def qryhistdate(bdate,d1=0):
     dateqry = datetime.strftime((bdate-timedelta(days=d1)),"%m-%d-%Y")
     return dateqry
-
-
-# In[72]:
-
 
 def setdates(sdfset,begdte,endte):
     sdfset['beginDate']= sdfsectapp['beginDate'].apply(lambda x : begdti) 
@@ -755,10 +640,6 @@ def setdates(sdfset,begdte,endte):
     sdfset['enDyWk'] = sdfsectapp['enDate'].apply(lambda x :  datetime.strftime(x,'%A'))
     # sdfsectapp.loc[0,'enDate'].day_name() #sdfsectapp.loc[0,'enDate'].day_name()
     return sdfset
-
-
-# In[73]:
-
 
 def lanestypeside(clside,cltype,nlanes):
     if clside.upper()=="BOTH":
@@ -777,10 +658,6 @@ def lanestypeside(clside,cltype,nlanes):
     return lts        
     #[ClosureSide]="Right",IIf([NumLanes]>1,[NumLanes] & " right lanes closed","Right lane closed"),[ClosureSide]="Left",IIf([NumLanes]>1,[NumLanes] & " left lanes closed","Left lane closed"),[ClosureSide]="Center",IIf([NumLanes]>1,[NumLanes] & " center lanes closed","Center lane closed"),[ClosureSide]="Full","Full lane closure",[ClosureSide]="Directional","Lanes closed in one direction",[ClosureSide]="Shift","Lanes shifted")
 
-
-# In[74]:
-
-
 #OnRoad: IIf([Route]="H-1" Or [Route]="H-2" Or [Route]="H-3",[Route],IIf([Route]="H-201",[RoadName],IIf(Left([Route],2)="H-",Left([Route],3) & " off ramp",[RoadName])))
 def routeinfo(rteid,rtename):
     if rteid.upper() in ["H-1", "H-2", "H-3"]:
@@ -793,10 +670,6 @@ def routeinfo(rteid,rtename):
         rtext = rtename 
     return rtext    
 
-
-# In[75]:
-
-
 #DirectionWords: IIf([direct] Is Null,""," in " & [direct] & " direction")
 def dirinfo(dirn):
     if len(dirn)==0:
@@ -804,10 +677,6 @@ def dirinfo(dirn):
     else:
         dirtext = dirn + " direction " 
     return dirtext
-
-
-# In[77]:
-
 
 def calc(lyr,qry):
     fld = "todayis"
@@ -856,10 +725,6 @@ def calc(lyr,qry):
         print (" Update result {} for  {} ".format (resultupd4,expn4))
         logger.info ("  Update result {} for  {} ".format (resultupd4,expn4))
 
-
-# In[78]:
-
-
 def calcexpn(lyr,qry,fld,val):
     expn = chr(123) + "\"field\" : \"{}\" , \"value\" : \"{}\"".format(fld,val) +chr(125) # 'value' : "\ �dot_achung�  
     sucs1=0
@@ -887,10 +752,6 @@ def calcexpn(lyr,qry,fld,val):
             print (" Attempt Error message : {} date update calculation : {} using query {} resulting {} failed at {}".format(str(e),lyrname,qry,resultupd,tbeg))
             logger.error(" Attempt Error message : {} date update calculation for {} using query {} resulting {} failed at {} ".format(str(e),lyrname,qry,resultupd,tbeg))
     return resultupd
-
-
-# In[79]:
-
 
 def calcfridayx(lyr,oidfld,maxoid,fld,x):
     # x = 0 for last week friday, 1 for this week friday, 2 for next week friday
@@ -923,10 +784,6 @@ def calcfridayx(lyr,oidfld,maxoid,fld,x):
                 sleep(10)
         oidval1 = oidval2
     return pres
-
-
-# In[80]:
-
 
 def calcfridays(lyr,oidfld):
     fld = "todayis"
@@ -1001,10 +858,6 @@ def calcfridays(lyr,oidfld):
         oidval1 = oidval2
     return (pres0,pres1,pres2)
 
-
-# In[81]:
-
-
 def calctoday(lyr,qry,fld,valdte):
     #fld = "todayis"
     #val =  datemidnight(datetime.today(),0) # "CURRENT_DATE()" #
@@ -1029,10 +882,6 @@ def calctoday(lyr,qry,fld,valdte):
     logger.info ("  Update {} result {} for  {} ".format (lyrname,pres,expn))
     return pres
 
-
-# In[82]:
-
-
 """ # FullSentence: [LanesTypeSide] & " on " & [OnRoad] & [DirectionWords] & IIf([BeginDateName]=[EndDateName]," on " 
 & [BeginDay] & ", " & [BeginDateName]," from " & [BeginDay] & ", " & [BeginDateName] & " to " & [EndDay] & ", " 
 & [EndDateName]) & ", " & [BeginTime] & " to " & [EndTime] & " " & [Special Remarks]
@@ -1049,10 +898,6 @@ def fulltext (lts,rtext,dirtext,begdymon,endymon,begdynm,endynm,begtm,endtm,begi
     else:    
         fultext = "{} on {}  {} from {}, {}, to {} , {} , {} to {} , {} , Additional Remarks : {}.".format(lts, rtext, dirtext, begdynm, begdymon,endynm, endymon,begtm, endtm,begendint,rmarks) 
     return fultext
-
-
-# In[84]:
-
 
 def calctodayx(lyr,qry,fld,valdte):
     #fld = "todayis"
@@ -1097,19 +942,11 @@ def calctodayx(lyr,qry,fld,valdte):
     logger.info ("  Update {} result {} for  {} records completed at {} ".format (lyrname,pres,maxoid,tqry))
     return pres
 
-
-# In[87]:
-
-
 def logResult(fourby, res):
     logStr = fourby + ": " + str(res) + "\n"
     logFile = open(logpath, 'a')
     logFile.write(logStr)
     logFile.close()
-
-
-# In[88]:
-
 
 def replace(client,fourby, df):
     data = df.to_dict(orient='records', into=NativeDict)
@@ -1129,10 +966,6 @@ def replace(client,fourby, df):
     client.close()
 
     return res
-
-
-# In[89]:
-
 
 class NativeDict(dict):
     """
@@ -1161,20 +994,12 @@ class NativeDict(dict):
             return value
         return value
 
-
-# In[90]:
-
-
 #Fill DirpRemarks field with long remarks data if it is blank
 def remarkstext(remarks,dirptext):
     if dirptext != None:
         if len(dirptext)>100:
             dirptext = remarks[0:99]
     return dirptext
-
-
-# In[91]:
-
 
 def socratamultilineshp(shp):
     if shp is not None:
@@ -1199,10 +1024,6 @@ def socratamultilineshp(shp):
     smupltxt = smupltxt.replace("'","").replace("[","(").replace("]",")")            
     return smupltxt
 
-
-# In[92]:
-
-
 def soclinegometry(shp):
     slinetxt = ""
     if shp is not None:
@@ -1225,10 +1046,6 @@ def soclinegometry(shp):
     slinetxt = slinetxt.replace("'","").replace("[","(").replace("]",")")            
     return slinetxt
 
-
-# In[94]:
-
-
 def recs2htmlbody(featsdf,htmltd,urlinkx):
     # merge relationship records from the child table to the current header record
     htmlby = "" #htmltxtd.format(q1="\"",urlink=urlinkx,q2="\"",island=sdfrec.Island,route=sdfrec.Route,begindate=sdfrec.beginDate,endate=sdfrec.enDate,intersfrom=sdfrec.IntersFrom,intersto=sdfrec.IntersTo) + "\n"
@@ -1238,17 +1055,9 @@ def recs2htmlbody(featsdf,htmltd,urlinkx):
     
     return htmlby
 
-
-# In[95]:
-
-
 def dateonly(bdate,h1=0):
     datemid = datetime.strptime(datetime.strftime(bdate,"%Y-%m-%d"),"%Y-%m-%d") + timedelta(hours=h1)
     return datemid
-
-
-# In[97]:
-
 
 def submit_request(request):
     """ Returns the response from an HTTP request in json format."""
@@ -1257,10 +1066,6 @@ def submit_request(request):
         content_decoded = content.decode("utf-8")
         job_info = json.loads(content_decoded)
         return job_info
-
-
-# In[98]:
-
 
 def get_token(portal_url, username, password):
     """ Returns an authentication token for use in ArcGIS Online."""
@@ -1294,10 +1099,6 @@ def get_token(portal_url, username, password):
             else:
                 raise Exception("Portal error: {} ".format(error_mess))
 
-
-# In[99]:
-
-
 def get_analysis_url(portal_url, token):
     """ Returns Analysis URL from AGOL for running analysis services."""
 
@@ -1317,10 +1118,6 @@ def get_analysis_url(portal_url, token):
                 return analysis_url
     else:
         raise Exception("Unable to obtain Analysis URL.")
-
-
-# In[100]:
-
 
 def analysis_job(analysis_url, task, token, params):
     """ Submits an Analysis job and returns the job URL for monitoring the job
@@ -1349,10 +1146,6 @@ def analysis_job(analysis_url, task, token, params):
         return task_url, analysis_response
     else:
         raise Exception("Unable to submit analysis job.")
-
-
-# In[101]:
-
 
 def analysis_job_status(task_url, job_info, token):
     """ Tracks the status of the submitted Analysis job."""
@@ -1387,11 +1180,7 @@ def analysis_job_status(task_url, job_info, token):
             raise Exception("No job results.")
     else:
         raise Exception("No job url.")
-
-
-# In[103]:
-
-
+                        
 def analysis_job_results(task_url, job_info, token):
     """ Use the job result json to get information about the feature service
         created from the Analysis job."""
@@ -1420,20 +1209,12 @@ def analysis_job_results(task_url, job_info, token):
             raise Exception("Unable to get analysis job results.")
     else:
         raise Exception("Unable to get analysis job results.")
-
-
-# In[104]:
-
-
+        
 #Fill DirpRemarks field with long remarks data if it is blank
 def remarkstextold(remarks,dirptext):
     if len(dirptext)==0:
         dirptext = remarks[0:99]
     return dirptext
-
-
-# In[105]:
-
 
 def remarkstextx(remarks,dirptext):
     try:
@@ -1458,20 +1239,9 @@ def remarkstextx(remarks,dirptext):
             dirptext = "No remarks"
     return dirptext
 
-
-# In[106]:
-
-
 def routenames(rdname,rte):
     if rdname == None:
         rdname = rte
     elif len(rdname)==0:
         rdname = rte
     return rdname
-
-
-# In[ ]:
-
-
-
-
