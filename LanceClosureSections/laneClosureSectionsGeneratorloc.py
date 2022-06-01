@@ -18,11 +18,11 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 lnclhdlr.setFormatter(formatter)
 logger.addHandler(lnclhdlr)
 logger.setLevel(logging.INFO)
-#username='dot_mmekuria', password='ChrisMaz@2'
+#username='dot_mmekuria', password='**********'
 # ArcGIS user credentials to authenticate against the portal
-credentials = { 'userName' : 'dot_mmekuria', 'passWord' : 'ChrisMaz@2'}
+credentials = { 'userName' : 'dot_mmekuria', 'passWord' : '**********'}
 userName = credentials['userName'] # arcpy.GetParameter(2) # 
-passWord =  credentials['passWord'] #  # arcpy.GetParameter(3) # "ChrisMaz"
+passWord =  credentials['passWord'] #  # arcpy.GetParameter(3) # "**********"
 #credentials = { 'userName' : arcpy.GetParameter(4), 'passWord' : arcpy.GetParameter(5)}
 # Address of your ArcGIS portal
 portal_url = r"http://histategis.maps.arcgis.com/"
