@@ -236,7 +236,7 @@ rteFCSelNm = 'rtesel'
 servicename =  lnclSrcFSTitle # "Lane_Closure_WebMap" # "HI DOT Daily Lane Closures Sample New" # arcpy.GetParameter(1) # 
 tempPath = sys.path[0]
 userName = "dot_mmekuria" # credentials['userName'] # arcpy.GetParameter(2) # 
-#passWord = credentials['passWord'] # arcpy.GetParameter(3) # "ChrisMaz!1"
+#passWord = credentials['passWord'] # arcpy.GetParameter(3) # "**********"
 arcpy.env.overwriteOutput = True
 #print("Temp path : {}".format(tempPath))
 
